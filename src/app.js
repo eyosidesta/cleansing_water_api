@@ -8,6 +8,11 @@ import { authRoutes } from './modules/auth/auth.routes.js';
 import { userRoutes } from './modules/users/users.routes.js';
 import { podcastRoutes } from './modules/podcasts/podcasts.routes.js';
 import { articleRoutes } from './modules/articles/articles.routes.js';
+import { seriesRoutes } from './modules/series/series.routes.js';
+import { uploadsRoutes } from './modules/uploads/uploads.routes.js';
+import { articleCategoriesRoutes } from './modules/articleCategories/articleCategories.routes.js';
+import { speakerRequestsRoutes } from './modules/speakerRequests/speakerRequests.routes.js';
+import { interviewRequestsRoutes } from './modules/interviewRequests/interviewRequests.routes.js';
 
 const app = express();
 
@@ -29,6 +34,11 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/podcasts', podcastRoutes);
 app.use('/api/articles', articleRoutes);
+app.use('/api/article-categories', articleCategoriesRoutes);
+app.use('/api/series', seriesRoutes);
+app.use('/api/uploads', uploadsRoutes);
+app.use('/api/speaker-requests', speakerRequestsRoutes);
+app.use('/api/interview-requests', interviewRequestsRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

@@ -12,6 +12,29 @@ enum Role {
   editor
 }
 
+enum RequestStatus {
+  NEW
+  IN_REVIEW
+  FOLLOW_UP
+  ACCEPTED
+  DECLINED
+}
+
+enum InterviewMediaType {
+  TELEVISION
+  RADIO
+  PRINT
+  PODCAST
+  ONLINE_VIDEO
+  ONLINE_ARTICLE
+  OTHER
+}
+
+enum InterviewType {
+  LIVE
+  RECORDED
+}
+
 model User {
   id           Int       @id @default(autoincrement())
   fullName     String
@@ -24,6 +47,16 @@ model User {
   articles     Article[]
 }
 
+model PodcastSeries {
+  id          Int       @id @default(autoincrement())
+  title       String
+  slug        String    @unique
+  description String    @db.Text
+  podcasts    Podcast[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
 model Podcast {
   id             Int      @id @default(autoincrement())
   youtubeUrl     String
@@ -33,28 +66,104 @@ model Podcast {
   description    String
   publishedAt    DateTime
   speakerName    String   @default("Cleansing Water Ministry")
+  seriesId       Int?
+  series         PodcastSeries? @relation(fields: [seriesId], references: [id], onDelete: SetNull)
   createdById    Int
   createdBy      User     @relation(fields: [createdById], references: [id], onDelete: Restrict)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   @@index([publishedAt])
+  @@index([seriesId])
   @@index([createdById])
 }
 
 model Article {
-  id           Int       @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   coverImageUrl String?
-  title        String
-  description  String
-  contentRaw   String    @db.Text
-  authorName   String    @default("Cleansing Water Ministry")
-  publishedAt  DateTime?
-  createdById  Int
-  createdBy    User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  title         String
+  excerpt       String    @db.Text
+  category      String?
+  categoryId    Int?
+  categoryRef   ArticleCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  contentRaw    String    @db.Text
+  authorName    String    @default("Cleansing Water Ministry")
+  readTime      Int?
+  publishedAt   DateTime?
+  createdById   Int
+  createdBy     User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   @@index([publishedAt])
+  @@index([category])
+  @@index([categoryId])
   @@index([createdById])
+}
+
+model ArticleCategory {
+  id          Int       @id @default(autoincrement())
+  title       String
+  slug        String    @unique
+  description String    @db.Text
+  articles    Article[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model InterviewRequest {
+  id                   Int                @id @default(autoincrement())
+  firstName            String
+  lastName             String
+  email                String
+  organizationName     String
+  organizationWebsite  String?
+  phone                String
+  interviewerName      String
+  purpose              String             @db.Text
+  duration             String
+  mediaType            InterviewMediaType
+  interviewType        InterviewType
+  requestedDate        DateTime
+  alternateDate        DateTime?
+  primaryTopic         String?
+  additionalInformation String            @db.Text
+  status               RequestStatus      @default(NEW)
+  adminNotes           String?            @db.Text
+  reviewedAt           DateTime?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  @@index([status])
+  @@index([requestedDate])
+}
+
+model SpeakerRequest {
+  id                   Int           @id @default(autoincrement())
+  organizationName     String
+  organizationWebsite  String?
+  firstName            String
+  lastName             String
+  email                String
+  phone                String
+  eventDate            DateTime
+  alternateDate        DateTime?
+  venueName            String
+  locationAddress      String
+  locationCity         String
+  locationState        String
+  locationPostalCode   String
+  locationCountry      String
+  speakingDuration     String
+  eventDescription     String      @db.Text
+  primaryTopic         String?
+  additionalInformation String?    @db.Text
+  status               RequestStatus @default(NEW)
+  adminNotes           String?      @db.Text
+  reviewedAt           DateTime?
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+
+  @@index([status])
+  @@index([eventDate])
 }

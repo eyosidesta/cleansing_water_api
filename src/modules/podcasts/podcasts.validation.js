@@ -7,6 +7,7 @@ const createPodcastSchema = z.object({
   description: z.string().trim().min(10),
   publishedAt: z.coerce.date(),
   speakerName: z.string().trim().min(2).optional(),
+  seriesId: z.number().int().positive().nullable().optional(),
 });
 
 const updatePodcastSchema = createPodcastSchema.partial();

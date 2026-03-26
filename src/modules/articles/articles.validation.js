@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 const createArticleSchema = z.object({
-  coverImageUrl: z.string().url().optional().nullable(),
   title: z.string().trim().min(3),
-  description: z.string().trim().min(10),
+  excerpt: z.string().trim().min(10),
+  categoryId: z.number().int().positive().nullable().optional(),
   contentRaw: z.string().trim().min(10),
   authorName: z.string().trim().min(2).optional(),
   publishedAt: z.coerce.date().optional().nullable(),

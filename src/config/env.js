@@ -9,6 +9,11 @@ const env = {
   JWT_SECRET: process.env.JWT_SECRET ?? '',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN ?? '7d',
   CORS_ORIGIN: process.env.CORS_ORIGIN ?? 'http://localhost:5173',
+  DO_SPACES_ENDPOINT: process.env.DO_SPACES_ENDPOINT ?? 'https://my-storage.tor1.digitaloceanspaces.com',
+  DO_SPACES_BUCKET: process.env.DO_SPACES_BUCKET ?? 'my-storage',
+  DO_SPACES_REGION: process.env.DO_SPACES_REGION ?? 'tor1',
+  DO_SPACES_KEY: process.env.DO_SPACES_KEY ?? '',
+  DO_SPACES_SECRET: process.env.DO_SPACES_SECRET ?? '',
 };
 
 if (!env.JWT_SECRET) {
