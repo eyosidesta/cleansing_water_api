@@ -45,6 +45,7 @@ model User {
   updatedAt    DateTime  @updatedAt
   podcasts     Podcast[]
   articles     Article[]
+  testimonies  Testimony[]
 }
 
 model PodcastSeries {
@@ -166,4 +167,38 @@ model SpeakerRequest {
 
   @@index([status])
   @@index([eventDate])
+}
+
+model ContactRequest {
+  id         Int           @id @default(autoincrement())
+  name       String
+  email      String
+  subject    String
+  message    String        @db.Text
+  status     RequestStatus @default(NEW)
+  adminNotes String?       @db.Text
+  reviewedAt DateTime?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Testimony {
+  id               Int       @id @default(autoincrement())
+  title            String
+  summary          String    @db.Text
+  contentRaw       String    @db.Text
+  authorName       String    @default("Cleansing Water Ministry")
+  coverImageUrl    String?
+  galleryImageUrls String[]
+  publishedAt      DateTime?
+  createdById      Int
+  createdBy        User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([publishedAt])
+  @@index([createdById])
 }
