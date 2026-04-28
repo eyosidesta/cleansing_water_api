@@ -13,6 +13,8 @@ import { uploadsRoutes } from './modules/uploads/uploads.routes.js';
 import { articleCategoriesRoutes } from './modules/articleCategories/articleCategories.routes.js';
 import { speakerRequestsRoutes } from './modules/speakerRequests/speakerRequests.routes.js';
 import { interviewRequestsRoutes } from './modules/interviewRequests/interviewRequests.routes.js';
+import { contactRequestsRoutes } from './modules/contactRequests/contactRequests.routes.js';
+import { testimonyRoutes } from './modules/testimonies/testimonies.routes.js';
 
 const app = express();
 
@@ -39,6 +41,8 @@ app.use('/api/series', seriesRoutes);
 app.use('/api/uploads', uploadsRoutes);
 app.use('/api/speaker-requests', speakerRequestsRoutes);
 app.use('/api/interview-requests', interviewRequestsRoutes);
+app.use('/api/contact-requests', contactRequestsRoutes);
+app.use('/api/testimonies', testimonyRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

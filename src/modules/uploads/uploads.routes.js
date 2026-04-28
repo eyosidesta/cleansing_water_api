@@ -1,7 +1,7 @@
 import multer from 'multer';
 import { Router } from 'express';
 import { requireAuth } from '../../middleware/auth.middleware.js';
-import { uploadPodcastCoverController } from './uploads.controller.js';
+import { uploadPodcastCoverController, uploadTestimonyImageController } from './uploads.controller.js';
 
 const uploadsRoutes = Router();
 
@@ -22,5 +22,6 @@ const upload = multer({
 });
 
 uploadsRoutes.post('/podcast-cover', requireAuth, upload.single('image'), uploadPodcastCoverController);
+uploadsRoutes.post('/testimony-image', requireAuth, upload.single('image'), uploadTestimonyImageController);
 
 export { uploadsRoutes };
